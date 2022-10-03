@@ -1,7 +1,15 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from 'redux/reducer-filter';
+import { getFilter } from 'redux/selectors';
 import {Container, Header, LabelContainer, UserInput } from '../Form/Form.styled'
 
-const Filter = ({ filter, onFilterChange }) => {
+const Filter = () => {
+    const dispatch = useDispatch();
+     const onFilterChange = (event ) => {
+    const { value } = event.currentTarget;
+    dispatch(setFilter(value));
+  }
+    const filter =useSelector(getFilter)
         return (
             <>
                 <Container>
@@ -19,10 +27,5 @@ const Filter = ({ filter, onFilterChange }) => {
             </>
         )
 }
-
-    Filter.propTypes = {
-        filter: PropTypes.string.isRequired,
-        onFilterChange: PropTypes.func.isRequired,
-    }
     
 export default Filter;

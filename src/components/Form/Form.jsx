@@ -1,42 +1,22 @@
+import { useForm } from 'helpers/hooks/useForm';
 import PropTypes from 'prop-types';
-import {Container, Header,FormContainer, LabelContainer, UserInput, StyledBtn } from './Form.styled';
-import { useState } from 'react';
+import { Container, Header, FormContainer, LabelContainer, UserInput, StyledBtn } from './Form.styled';
 
-const Form = ({addNewContact,onNotValid }) => {
-    const [name, setName] = useState('');
-    const [tel, setTel] = useState('');
- 
-
-
-   const handleChange= (event) => {
-        const { name, value } = event.currentTarget;
-        name === 'name' ? setName(value) : setTel(value);
-    }  
-
-    const formValidation = ( event, callback, showMessage)=> {
-        event.preventDefault();
-        if (!name || !tel) {
-            return showMessage('Please fill all filds');
-        }
-
-        const isExist = callback({ name, tel });
-
-        if (!isExist) reset();
-        
+const Form = ({onSubmit }) => {
+    const initialState = {
+        name: '',
+        tel: '',    
     }
 
-    const reset = ()=> {
-        setName('');
-        setTel('');
-    }
+    const { state, handleChange, handleSubmit } = useForm({initialState, onSubmit});
+    const { name, tel } = state;
 
-        // const { name, tel } = this.state;
-        // const { addNewContact, onNotValid } = this.props;
+
         return (
             <>
                 <Container>
             <Header>Phonebook</Header>
-            <FormContainer onSubmit={(event) => {formValidation(event, addNewContact, onNotValid)}}>
+            <FormContainer onSubmit={handleSubmit}>
                 <LabelContainer >
                     Name
                     <UserInput
@@ -68,7 +48,6 @@ const Form = ({addNewContact,onNotValid }) => {
 }
     
     Form.propTypes = {
-        addNewContact: PropTypes.func.isRequired,
-        onNotValid: PropTypes.func.isRequired,
+        onSubmit: PropTypes.func.isRequired,
     };
 export default Form;
